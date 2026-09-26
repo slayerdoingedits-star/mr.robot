@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- ВРЕМЕННЫЙ ФАЙЛ ДЛЯ ТЕСТИРОВАНИЯ. Удаляется после проверки. -->
+<html><head><meta charset="utf-8"><title>harness</title>
+<style>html,body{margin:0;height:100%;background:#000}iframe{border:0;width:100vw;height:100vh;display:block}</style>
+</head><body>
+<iframe id="f" src="index.html"></iframe>
+<script>
+const q = new URLSearchParams(location.search);
+const app = q.get('app') || 'term';
+const sub = q.get('sub') || '';
+const f = document.getElementById('f');
+f.addEventListener('load', () => {
+  const w = f.contentWindow, d = f.contentDocument;
+  setTimeout(() => {
+    try {
+      w.BOOT.skip();
+      w.localStorage.clear();
+      w.ST.reset();
+      const inp = d.getElementById('regHandle');
+      inp.value = q.get('user') || 'nullbyte';
+      inp.dispatchEvent(new Event('input', { bubbles: true }));
+      d.getElementById('regGo').click();
+      if (q.get('ec')) { w.ST.ecAdd(parseInt(q.get('ec'), 10), 'test'); w.ST.save(); }
+      w.APP.open(app);
+      if (sub === 'news') w.APP.tabSet('news');
+      if (sub === 'chapter') { d.querySelector('[data-node="' + (q.get('node') || 'el-1') + '"]').click(); }
+      if (sub === 'blitzrun') w.BLITZ.start(q.get('mission') || 'ms_sql');
+      if (q.get('question')) {
+        const qi = d.getElementById('qInput');
+        if (qi) { qi.value = q.get('question'); qi.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); }
+      }
+      if (q.get('cmd')) { q.get('cmd').split(';').forEach(c => w.TERM.run(c)); }
+    } catch (e) {
+      const pre = d.createElement('pre');
+      pre.style.cssText = 'position:fixed;z-index:99999;inset:0;background:#900;color:#fff;font:14px monospace;padding:20px;white-space:pre-wrap';
+      pre.textContent = 'HARNESS ERROR: ' + e.message + '\n' + e.stack;
+      d.body.appendChild(pre);
+    }
+  }, 120);
+});
+</script>
+</body></html>

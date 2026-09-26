@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="kali">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<title>fsociety://e-corp — операционная среда</title>
+<meta name="description" content="Хакерский терминал и рабочий стол в эстетике сериала Mr. Robot. The Daily Hack, библиотека Дарлин, блиц-взлом, рынок даркнета, доска fsociety." />
+<link rel="icon" href="assets/fsociety.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/terminal.css" />
+<link rel="stylesheet" href="css/apps.css" />
+<link rel="stylesheet" href="css/glitch.css" />
+</head>
+<body class="is-booting">
+
+<!-- ═══════════════ ICON SPRITE ═══════════════ -->
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <defs>
+    <symbol id="i-term" viewBox="0 0 24 24">
+      <path d="M3 4h18v16H3z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M6.5 9l3 3-3 3M12 15h5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+    </symbol>
+    <symbol id="i-daily" viewBox="0 0 24 24">
+      <path d="M3 5h18v16H3z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M3 9h18M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M6 12h5M6 15h12M6 18h8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+    <symbol id="i-library" viewBox="0 0 24 24">
+      <circle cx="12" cy="4.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="4.5" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="12" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="19.5" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M12 6.7v8.9M12 15.6H6.6M12 15.6h5.4" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+    <symbol id="i-blitz" viewBox="0 0 24 24">
+      <circle cx="12" cy="13" r="8.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M12 8v5.2l3.2 2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+      <path d="M13.4 2.6L6.4 12.4h5.2l-1 5.6 7-9.8h-5.2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-market" viewBox="0 0 24 24">
+      <path d="M3 7l2.2 12h13.6L21 7z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M8.4 7V5.4a3.6 3.6 0 017.2 0V7" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M9.4 11.4l5.2 2.6-5.2 2.6z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+    <symbol id="i-board" viewBox="0 0 24 24">
+      <path d="M5 4h14v4H5zM7 8h10v4H7zM4 12h16v4H4zM8 16h8v4H8z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <path d="M12 1.6l1.5 2.6H10.5z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-profile" viewBox="0 0 24 24">
+      <path d="M4 20c0-3.6 3.4-6 8-6s8 2.4 8 6" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M12 5.4v5.2M9.4 8h5.2" stroke="currentColor" stroke-width="1"/>
+    </symbol>
+    <symbol id="i-power" viewBox="0 0 24 24">
+      <path d="M12 3v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
+      <path d="M7.4 6.6a7 7 0 109.2 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <path d="M5 11h14v10H5z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M8.4 11V7.6a3.6 3.6 0 017.2 0V11" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="12" cy="15.6" r="1.4" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══════════════ BACKGROUND LAYERS ═══════════════ -->
+<div class="wallpaper" id="wallpaper" aria-hidden="true">
+  <div class="wallpaper__grid"></div>
+  <div class="wallpaper__glow"></div>
+</div>
+
+<!-- fsociety mask, faintly flickering behind everything -->
+<div class="maskfield" id="maskfield" aria-hidden="true">
+  <div class="maskfield__ghost maskfield__ghost--r" data-ch="1"></div>
+  <div class="maskfield__ghost maskfield__ghost--c" data-ch="2"></div>
+  <div class="maskfield__ghost maskfield__ghost--main" data-ch="0"></div>
+  <svg class="maskfield__svg" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="mgrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--accent)" stop-opacity=".95"/>
+        <stop offset=".55" stop-color="var(--accent)" stop-opacity=".7"/>
+        <stop offset="1" stop-color="var(--accent)" stop-opacity=".35"/>
+      </linearGradient>
+      <filter id="mglow" x="-25%" y="-25%" width="150%" height="150%">
+        <feGaussianBlur stdDeviation="3.2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g fill="none" stroke="url(#mgrad)" stroke-width="4.5" stroke-linejoin="round" filter="url(#mglow)">
+      <path d="M74 6C36 6 12 44 12 96c0 40 10 62 10 90 0 26-8 44-8 62 0 30 16 52 16 84 0 40 12 66 34 84 18 15 36 22 36 22"/>
+      <path d="M326 6c38 0 62 38 62 90 0 40-10 62-10 90 0 26 8 44 8 62 0 30-16 52-16 84 0 40-12 66-34 84-18 15-36 22-36 22"/>
+      <path d="M200 6c-30 0-52 22-58 54-4 22-2 40-2 58 0 22-6 34-6 48 0 18 8 26 8 40"/>
+      <path d="M200 6c30 0 52 22 58 54 4 22 2 40 2 58 0 22 6 34 6 48 0 18-8 26-8 40"/>
+      <path d="M92 128c34 16 66 24 108 24s74-8 108-24"/>
+      <path d="M74 208c40 22 82 32 126 32s86-10 126-32"/>
+      <path d="M96 300c34 18 70 26 104 26s70-8 104-26"/>
+      <path d="M120 386c26 14 54 20 80 20s54-6 80-20"/>
+      <path d="M158 24c-4 26 4 52 16 74M242 24c4 26-4 52-16 74"/>
+      <path d="M132 156c22 10 44 14 68 14s46-4 68-14M136 240c20 10 42 14 64 14s44-4 64-14"/>
+    </g>
+  </svg>
+  <div class="maskfield__flare"></div>
+</div>
+
+<div class="crt" aria-hidden="true">
+  <div class="crt__scan"></div>
+  <div class="crt__shadow"></div>
+  <canvas class="crt__noise" id="noiseCanvas" width="220" height="140"></canvas>
+</div>
+<canvas class="glitchfx" id="glitchCanvas" aria-hidden="true"></canvas>
+
+<!-- ═══════════════ BOOT SEQUENCE ═══════════════ -->
+<section class="boot" id="boot" aria-label="Инициализация системы">
+  <div class="boot__inner">
+    <pre class="boot__log" id="bootLog" aria-live="polite"></pre>
+    <div class="boot__code" id="bootCode" hidden></div>
+    <div class="boot__bar"><i id="bootBar"></i></div>
+    <div class="boot__meta">
+      <span id="bootStage">POST</span>
+      <span id="bootPct">0%</span>
+    </div>
+    <div class="boot__skip">[ любой клавиш — пропустить ]</div>
+  </div>
+</section>
+
+<!-- ═══════════════ DESKTOP ═══════════════ -->
+<div class="desktop" id="desktop" hidden>
+
+  <header class="sysbar">
+    <div class="sysbar__left">
+      <span class="sysbar__logo" title="fsociety">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-library"/></svg>
+        <b>fsociety</b>
+      </span>
+      <span class="sysbar__sep"></span>
+      <span class="sysbar__chan" id="chanStatus">E-CORP://SECURE-CHANNEL</span>
+      <span class="pulse" id="linkPulse" title="соединение"></span>
+    </div>
+    <div class="sysbar__right">
+      <span class="stat" id="statThreat" title="уровень угрозы">THREAT <b class="ok">LOW</b></span>
+      <span class="stat" id="statEc" title="баланс">◎ <b>0</b> EC</span>
+      <span class="stat" id="statStreak" title="серия">▲ <b>0</b></span>
+      <span class="stat" id="statClock" title="время Нью-Йорка">--:--:-- EST</span>
+      <button class="iconbtn" id="btnLock" title="заблокировать (L)" aria-label="Заблокировать"><svg viewBox="0 0 24 24"><use href="#i-lock"/></svg></button>
+      <button class="iconbtn" id="btnPower" title="перезагрузка (перезапуск системы)" aria-label="Перезагрузка"><svg viewBox="0 0 24 24"><use href="#i-power"/></svg></button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <nav class="dock" id="dock" aria-label="Приложения">
+      <button class="dock__btn is-active" data-app="term"      title="Терминал (F1)"><svg viewBox="0 0 24 24"><use href="#i-term"/></svg><span>Терминал</span><kbd>F1</kbd></button>
+      <button class="dock__btn" data-app="daily"    title="The Daily Hack (F2)"><svg viewBox="0 0 24 24"><use href="#i-daily"/></svg><span>Daily Hack</span><kbd>F2</kbd></button>
+      <button class="dock__btn" data-app="library"  title="Библиотека Дарлин (F3)"><svg viewBox="0 0 24 24"><use href="#i-library"/></svg><span>Библиотека</span><kbd>F3</kbd></button>
+      <button class="dock__btn" data-app="blitz"    title="Блиц-взлом (F4)"><svg viewBox="0 0 24 24"><use href="#i-blitz"/></svg><span>Блиц-взлом</span><kbd>F4</kbd></button>
+      <button class="dock__btn" data-app="market"   title="Рынок даркнета (F5)"><svg viewBox="0 0 24 24"><use href="#i-market"/></svg><span>Даркнет</span><kbd>F5</kbd></button>
+      <button class="dock__btn" data-app="board"    title="Доска fsociety (F6)"><svg viewBox="0 0 24 24"><use href="#i-board"/></svg><span>Рейтинг</span><kbd>F6</kbd></button>
+      <button class="dock__btn" data-app="profile"  title="Профиль и настройки (F7)"><svg viewBox="0 0 24 24"><use href="#i-profile"/></svg><span>Профиль</span><kbd>F7</kbd></button>
+    </nav>
+
+    <main class="stage">
+      <div class="frame" id="frame">
+        <div class="frame__bar">
+          <span class="frame__dots"><i></i><i></i><i></i></span>
+          <span class="frame__title" id="frameTitle">/root — терминал</span>
+          <span class="frame__right" id="frameRight">e-corp-sec</span>
+        </div>
+        <div class="frame__body" id="frameBody"></div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="taskbar">
+    <span class="taskbar__u" id="tbUser">@— </span>
+    <span class="taskbar__sep"></span>
+    <span id="tbPath">/</span>
+    <span class="grow"></span>
+    <span class="taskbar__hint" id="tbHint">терминал: Ctrl+L — очистить · Tab — автодополнение · F1–F7 — панели</span>
+  </footer>
+</div>
+
+<!-- ═══════════════ REGISTRATION ═══════════════ -->
+<div class="overlay" id="regOverlay" hidden>
+  <div class="dialog">
+    <div class="dialog__bar"><span>NEW_OPERATOR // ИДЕНТИФИКАЦИЯ</span><span class="dialog__id">uid:0</span></div>
+    <div class="dialog__body regbody">
+      <div class="regbody__left">
+        <p class="lede">Прежде чем получить доступ к узлу, выберите <b>позывной</b> и сгенерируйте себе <b>худи</b> — аватар, который увидят другие операторы.</p>
+        <label class="field">
+          <span>ПОЗЫВНОЙ / HANDLE</span>
+          <input id="regHandle" type="text" maxlength="18" autocomplete="off" spellcheck="false" placeholder="e.g. nullbyte" />
+        </label>
+        <p class="valid" id="regValid"></p>
+        <div class="field">
+          <span>ХУДИ / АВАТАР</span>
+          <div class="hoodgrid" id="hoodGrid"></div>
+        </div>
+        <div class="regbody__actions">
+          <button class="btn btn--primary" id="regGo">ПОДКЛЮЧИТЬСЯ</button>
+          <button class="btn" id="regReroll">СГЕНЕРИРОВАТЬ ЗАНОВО</button>
+        </div>
+        <p class="tiny">Данные хранятся локально в вашем браузере. Ничего не уходит наружу, кроме анонимного запроса новостей.</p>
+      </div>
+      <div class="regbody__right">
+        <div class="hoodpreview" id="hoodPreview"></div>
+        <div class="hoodmeta" id="hoodMeta"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOASTS / TICKER ═══════════════ -->
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="ticker" id="ticker" hidden><b id="tickerBody"></b></div>
+
+<!-- ═══════════════ GLITCH TEXT OVERLAY ═══════════════ -->
+<div class="gtag" id="gtag" aria-hidden="true"></div>
+
+<script src="js/data.core.js"></script>
+<script src="js/data.elliot.js"></script>
+<script src="js/data.darlene.js"></script>
+<script src="js/data.moby.js"></script>
+<script src="js/state.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/glitch.js"></script>
+<script src="js/boot.js"></script>
+<script src="js/term.js"></script>
+<script src="js/daily.js"></script>
+<script src="js/library.js"></script>
+<script src="js/blitz.js"></script>
+<script src="js/market.js"></script>
+<script src="js/board.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
